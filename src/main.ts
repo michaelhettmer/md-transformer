@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Modal, Plugin, PluginSettingTab } from 'obsidian';
 
 interface TemplateMigrationSettings {
 	
@@ -8,7 +8,7 @@ const DEFAULT_SETTINGS: TemplateMigrationSettings = {
 	
 }
 
-export default class TemplateMigration extends Plugin {
+export default class TemplateMigrationPlugin extends Plugin {
 	settings: TemplateMigrationSettings;
 
 	async onload() {
@@ -57,9 +57,9 @@ class TemplateMigrationModal extends Modal {
 }
 
 class TemplateMigrationSettingsTab extends PluginSettingTab {
-	plugin: TemplateMigration;
+	plugin: TemplateMigrationPlugin;
 
-	constructor(app: App, plugin: TemplateMigration) {
+	constructor(app: App, plugin: TemplateMigrationPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
