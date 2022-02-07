@@ -2,7 +2,7 @@
 	"id": "obsidian-template-migration",
 	"name": "Template Migration",
 	"version": "1.0.0",
-	"minAppVersion": "0.12.0",
+	"minAppVersion": "0.13.0",
 	"description": "This plugins enables users to migrate notes created by templates to newer versions of those templates.",
 	"author": "Michael Hettmer",
 	"authorUrl": "https://michael-hettmer.de",
