@@ -1,10 +1,10 @@
 {
-	"id": "obsidian-sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.1",
+	"id": "obsidian-template-migration",
+	"name": "Template Migration",
+	"version": "1.0.0",
 	"minAppVersion": "0.12.0",
-	"description": "This is a sample plugin for Obsidian. This plugin demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
+	"description": "This plugins enables users to migrate notes created by templates to newer versions of those templates.",
+	"author": "Michael Hettmer",
+	"authorUrl": "https://michael-hettmer.de",
 	"isDesktopOnly": false
 }
