@@ -1,0 +1,238 @@
+diff --git a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.dev.js b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.dev.js
+index 2ace7f2..a551e66 100644
+--- a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.dev.js
++++ b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.dev.js
+@@ -15,6 +15,26 @@ var startCase = require('lodash.startcase');
+ 
+ function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
+ 
++function _interopNamespace(e) {
++  if (e && e.__esModule) return e;
++  var n = Object.create(null);
++  if (e) {
++    Object.keys(e).forEach(function (k) {
++      if (k !== 'default') {
++        var d = Object.getOwnPropertyDescriptor(e, k);
++        Object.defineProperty(n, k, d.get ? d : {
++          enumerable: true,
++          get: function () { return e[k]; }
++        });
++      }
++    });
++  }
++  n["default"] = e;
++  return Object.freeze(n);
++}
++
++var git__namespace = /*#__PURE__*/_interopNamespace(git);
++
+ var resolveFrom__default = /*#__PURE__*/_interopDefault(resolveFrom);
+ var detectIndent__default = /*#__PURE__*/_interopDefault(detectIndent);
+ var fs__default = /*#__PURE__*/_interopDefault(fs);
+@@ -44,10 +64,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -55,19 +74,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -96,7 +108,7 @@ function shouldUpdateDependencyBasedOnConfig(release, {
+   minReleaseType,
+   onlyUpdatePeerDependentsWhenOutOfRange
+ }) {
+-  if (!semver__default['default'].satisfies(release.version, depVersionRange)) {
++  if (!semver__default["default"].satisfies(release.version, depVersionRange)) {
+     // Dependencies leaving semver range should always be updated
+     return true;
+   }
+@@ -249,7 +261,7 @@ function stringDefined(s) {
+ 
+ async function getCommitsThatAddChangesets(changesetIds, cwd) {
+   const paths = changesetIds.map(id => `.changeset/${id}.md`);
+-  const commits = await git.getCommitsThatAddFiles(paths, cwd);
++  const commits = await git__namespace.getCommitsThatAddFiles(paths, cwd);
+ 
+   if (commits.every(stringDefined)) {
+     // We have commits for all files
+@@ -259,7 +271,7 @@ async function getCommitsThatAddChangesets(changesetIds, cwd) {
+ 
+   const missingIds = changesetIds.map((id, i) => commits[i] ? undefined : id).filter(stringDefined);
+   const legacyPaths = missingIds.map(id => `.changeset/${id}/changes.json`);
+-  const commitsForLegacyPaths = await git.getCommitsThatAddFiles(legacyPaths, cwd); // Fill in the blanks in the array of commits
++  const commitsForLegacyPaths = await git__namespace.getCommitsThatAddFiles(legacyPaths, cwd); // Fill in the blanks in the array of commits
+ 
+   changesetIds.forEach((id, i) => {
+     if (!commits[i]) {
+@@ -335,8 +347,8 @@ async function applyReleasePlan(releasePlan, packages, config$1 = config.default
+   if (releasePlan.preState === undefined || releasePlan.preState.mode === "exit") {
+     let changesetFolder = path__default['default'].resolve(cwd, ".changeset");
+     await Promise.all(changesets.map(async changeset => {
+-      let changesetPath = path__default['default'].resolve(changesetFolder, `${changeset.id}.md`);
+-      let changesetFolderPath = path__default['default'].resolve(changesetFolder, changeset.id);
++      let changesetPath = path__default["default"].resolve(changesetFolder, `${changeset.id}.md`);
++      let changesetFolderPath = path__default["default"].resolve(changesetFolder, changeset.id);
+ 
+       if (await fs__default['default'].pathExists(changesetPath)) {
+         // DO NOT remove changeset for ignored packages
+@@ -445,4 +457,4 @@ async function writeFormattedMarkdownFile(filePath, content, prettierConfig) {
+   })));
+ }
+ 
+-exports.default = applyReleasePlan;
++exports["default"] = applyReleasePlan;
+diff --git a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.prod.js b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.prod.js
+index 794d04c..139eab3 100644
+--- a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.prod.js
++++ b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.prod.js
+@@ -12,7 +12,23 @@ function _interopDefault(e) {
+   };
+ }
+ 
+-var resolveFrom__default = _interopDefault(resolveFrom), detectIndent__default = _interopDefault(detectIndent), fs__default = _interopDefault(fs), path__default = _interopDefault(path), prettier__default = _interopDefault(prettier), getVersionRangeType__default = _interopDefault(getVersionRangeType), semver__default = _interopDefault(semver), startCase__default = _interopDefault(startCase);
++function _interopNamespace(e) {
++  if (e && e.__esModule) return e;
++  var n = Object.create(null);
++  return e && Object.keys(e).forEach((function(k) {
++    if ("default" !== k) {
++      var d = Object.getOwnPropertyDescriptor(e, k);
++      Object.defineProperty(n, k, d.get ? d : {
++        enumerable: !0,
++        get: function() {
++          return e[k];
++        }
++      });
++    }
++  })), n.default = e, Object.freeze(n);
++}
++
++var git__namespace = _interopNamespace(git), resolveFrom__default = _interopDefault(resolveFrom), detectIndent__default = _interopDefault(detectIndent), fs__default = _interopDefault(fs), path__default = _interopDefault(path), prettier__default = _interopDefault(prettier), getVersionRangeType__default = _interopDefault(getVersionRangeType), semver__default = _interopDefault(semver), startCase__default = _interopDefault(startCase);
+ 
+ function _defineProperty(obj, key, value) {
+   return key in obj ? Object.defineProperty(obj, key, {
+@@ -50,7 +66,7 @@ const bumpTypes = [ "none", "patch", "minor", "major" ];
+ 
+ function getBumpLevel(type) {
+   const level = bumpTypes.indexOf(type);
+-  if (level < 0) throw new Error("Unrecognised bump type " + type);
++  if (level < 0) throw new Error(`Unrecognised bump type ${type}`);
+   return level;
+ }
+ 
+@@ -145,9 +161,9 @@ function stringDefined(s) {
+ }
+ 
+ async function getCommitsThatAddChangesets(changesetIds, cwd) {
+-  const paths = changesetIds.map((id => `.changeset/${id}.md`)), commits = await git.getCommitsThatAddFiles(paths, cwd);
++  const paths = changesetIds.map((id => `.changeset/${id}.md`)), commits = await git__namespace.getCommitsThatAddFiles(paths, cwd);
+   if (commits.every(stringDefined)) return commits;
+-  const missingIds = changesetIds.map(((id, i) => commits[i] ? void 0 : id)).filter(stringDefined), legacyPaths = missingIds.map((id => `.changeset/${id}/changes.json`)), commitsForLegacyPaths = await git.getCommitsThatAddFiles(legacyPaths, cwd);
++  const missingIds = changesetIds.map(((id, i) => commits[i] ? void 0 : id)).filter(stringDefined), legacyPaths = missingIds.map((id => `.changeset/${id}/changes.json`)), commitsForLegacyPaths = await git__namespace.getCommitsThatAddFiles(legacyPaths, cwd);
+   return changesetIds.forEach(((id, i) => {
+     if (!commits[i]) {
+       const missingIndex = missingIds.indexOf(id);
+diff --git a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.esm.js b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.esm.js
+index 5508740..603830f 100644
+--- a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.esm.js
++++ b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.esm.js
+@@ -1,5 +1,5 @@
+ import { defaultConfig } from '@changesets/config';
+-import { getCommitsThatAddFiles } from '@changesets/git';
++import * as git from '@changesets/git';
+ import resolveFrom from 'resolve-from';
+ import detectIndent from 'detect-indent';
+ import fs from 'fs-extra';
+@@ -29,10 +29,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -40,19 +39,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -234,7 +226,7 @@ function stringDefined(s) {
+ 
+ async function getCommitsThatAddChangesets(changesetIds, cwd) {
+   const paths = changesetIds.map(id => `.changeset/${id}.md`);
+-  const commits = await getCommitsThatAddFiles(paths, cwd);
++  const commits = await git.getCommitsThatAddFiles(paths, cwd);
+ 
+   if (commits.every(stringDefined)) {
+     // We have commits for all files
+@@ -244,7 +236,7 @@ async function getCommitsThatAddChangesets(changesetIds, cwd) {
+ 
+   const missingIds = changesetIds.map((id, i) => commits[i] ? undefined : id).filter(stringDefined);
+   const legacyPaths = missingIds.map(id => `.changeset/${id}/changes.json`);
+-  const commitsForLegacyPaths = await getCommitsThatAddFiles(legacyPaths, cwd); // Fill in the blanks in the array of commits
++  const commitsForLegacyPaths = await git.getCommitsThatAddFiles(legacyPaths, cwd); // Fill in the blanks in the array of commits
+ 
+   changesetIds.forEach((id, i) => {
+     if (!commits[i]) {
+@@ -430,4 +422,4 @@ async function writeFormattedMarkdownFile(filePath, content, prettierConfig) {
+   })));
+ }
+ 
+-export default applyReleasePlan;
++export { applyReleasePlan as default };

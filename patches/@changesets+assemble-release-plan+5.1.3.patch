@@ -1,0 +1,325 @@
+diff --git a/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.cjs.dev.js b/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.cjs.dev.js
+index f05ea74..19b5b9b 100644
+--- a/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.cjs.dev.js
++++ b/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.cjs.dev.js
+@@ -6,9 +6,25 @@ var semver = require('semver');
+ var errors = require('@changesets/errors');
+ var getDependentsGraph = require('@changesets/get-dependents-graph');
+ 
+-function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
++function _interopNamespace(e) {
++  if (e && e.__esModule) return e;
++  var n = Object.create(null);
++  if (e) {
++    Object.keys(e).forEach(function (k) {
++      if (k !== 'default') {
++        var d = Object.getOwnPropertyDescriptor(e, k);
++        Object.defineProperty(n, k, d.get ? d : {
++          enumerable: true,
++          get: function () { return e[k]; }
++        });
++      }
++    });
++  }
++  n["default"] = e;
++  return Object.freeze(n);
++}
+ 
+-var semver__default = /*#__PURE__*/_interopDefault(semver);
++var semver__namespace = /*#__PURE__*/_interopNamespace(semver);
+ 
+ function _defineProperty(obj, key, value) {
+   if (key in obj) {
+@@ -30,10 +46,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -41,19 +56,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -64,7 +72,7 @@ function incrementVersion(release, preInfo) {
+     return release.oldVersion;
+   }
+ 
+-  let version = semver.inc(release.oldVersion, release.type);
++  let version = semver__namespace.inc(release.oldVersion, release.type);
+ 
+   if (preInfo !== undefined && preInfo.state.mode !== "exit") {
+     let preVersion = preInfo.preVersions.get(release.name);
+@@ -142,7 +150,7 @@ function determineDependents({
+             type = "major";
+           } else {
+             if ( // TODO validate this - I don't think it's right anymore
+-            (!releases.has(dependent) || releases.get(dependent).type === "none") && (config.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.updateInternalDependents === "always" || !semver__default['default'].satisfies(incrementVersion(nextRelease, preInfo), versionRange))) {
++            (!releases.has(dependent) || releases.get(dependent).type === "none") && (config.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.updateInternalDependents === "always" || !semver__namespace["default"].satisfies(incrementVersion(nextRelease, preInfo), versionRange))) {
+               switch (depType) {
+                 case "dependencies":
+                 case "optionalDependencies":
+@@ -255,7 +263,7 @@ function shouldBumpMajor({
+   // we check if it is a peerDependency because if it is, our dependent bump type might need to be major.
+   return depType === "peerDependencies" && nextRelease.type !== "none" && nextRelease.type !== "patch" && ( // 1. If onlyUpdatePeerDependentsWhenOutOfRange set to true, bump major if the version is leaving the range.
+   // 2. If onlyUpdatePeerDependentsWhenOutOfRange set to false, bump major regardless whether or not the version is leaving the range.
+-  !onlyUpdatePeerDependentsWhenOutOfRange || !semver__default['default'].satisfies(incrementVersion(nextRelease, preInfo), versionRange)) && ( // bump major only if the dependent doesn't already has a major release.
++  !onlyUpdatePeerDependentsWhenOutOfRange || !semver__namespace["default"].satisfies(incrementVersion(nextRelease, preInfo), versionRange)) && ( // bump major only if the dependent doesn't already has a major release.
+   !releases.has(dependent) || releases.has(dependent) && releases.get(dependent).type !== "major");
+ }
+ 
+@@ -341,7 +349,7 @@ function getCurrentHighestVersion(packageGroup, packagesByName) {
+       throw new Error(`fatal: could not resolve linked packages`);
+     }
+ 
+-    if (highestVersion === undefined || semver__default['default'].gt(pkg.packageJson.version, highestVersion)) {
++    if (highestVersion === undefined || semver__namespace["default"].gt(pkg.packageJson.version, highestVersion)) {
+       highestVersion = pkg.packageJson.version;
+     }
+   }
+@@ -433,7 +441,7 @@ function applyLinks(releases, packagesByName, linked) {
+ }
+ 
+ function getPreVersion(version) {
+-  let parsed = semver.parse(version);
++  let parsed = semver__namespace.parse(version);
+   let preVersion = parsed.prerelease[1] === undefined ? -1 : parsed.prerelease[1];
+ 
+   if (typeof preVersion !== "number") {
+@@ -631,4 +639,4 @@ function getPreInfo(changesets, packagesByName, config, preState) {
+   };
+ }
+ 
+-exports.default = assembleReleasePlan;
++exports["default"] = assembleReleasePlan;
+diff --git a/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.cjs.prod.js b/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.cjs.prod.js
+index e5a21c6..d415da7 100644
+--- a/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.cjs.prod.js
++++ b/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.cjs.prod.js
+@@ -6,13 +6,23 @@ Object.defineProperty(exports, "__esModule", {
+ 
+ var semver = require("semver"), errors = require("@changesets/errors"), getDependentsGraph = require("@changesets/get-dependents-graph");
+ 
+-function _interopDefault(e) {
+-  return e && e.__esModule ? e : {
+-    default: e
+-  };
++function _interopNamespace(e) {
++  if (e && e.__esModule) return e;
++  var n = Object.create(null);
++  return e && Object.keys(e).forEach((function(k) {
++    if ("default" !== k) {
++      var d = Object.getOwnPropertyDescriptor(e, k);
++      Object.defineProperty(n, k, d.get ? d : {
++        enumerable: !0,
++        get: function() {
++          return e[k];
++        }
++      });
++    }
++  })), n.default = e, Object.freeze(n);
+ }
+ 
+-var semver__default = _interopDefault(semver);
++var semver__namespace = _interopNamespace(semver);
+ 
+ function _defineProperty(obj, key, value) {
+   return key in obj ? Object.defineProperty(obj, key, {
+@@ -48,7 +58,7 @@ function _objectSpread2(target) {
+ 
+ function incrementVersion(release, preInfo) {
+   if ("none" === release.type) return release.oldVersion;
+-  let version = semver.inc(release.oldVersion, release.type);
++  let version = semver__namespace.inc(release.oldVersion, release.type);
+   if (void 0 !== preInfo && "exit" !== preInfo.state.mode) {
+     let preVersion = preInfo.preVersions.get(release.name);
+     if (void 0 === preVersion) throw new errors.InternalError(`preVersion for ${release.name} does not exist when preState is defined`);
+@@ -63,7 +73,7 @@ function determineDependents({releases: releases, packagesByName: packagesByName
+     const nextRelease = pkgsToSearch.shift();
+     if (!nextRelease) continue;
+     const pkgDependents = dependencyGraph.get(nextRelease.name);
+-    if (!pkgDependents) throw new Error("Error in determining dependents - could not find package in repository: " + nextRelease.name);
++    if (!pkgDependents) throw new Error(`Error in determining dependents - could not find package in repository: ${nextRelease.name}`);
+     pkgDependents.map((dependent => {
+       let type;
+       const dependentPackage = packagesByName.get(dependent);
+@@ -78,7 +88,7 @@ function determineDependents({releases: releases, packagesByName: packagesByName
+           nextRelease: nextRelease,
+           preInfo: preInfo,
+           onlyUpdatePeerDependentsWhenOutOfRange: config.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.onlyUpdatePeerDependentsWhenOutOfRange
+-        })) type = "major"; else if (!(releases.has(dependent) && "none" !== releases.get(dependent).type || "always" !== config.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.updateInternalDependents && semver__default.default.satisfies(incrementVersion(nextRelease, preInfo), versionRange))) switch (depType) {
++        })) type = "major"; else if (!(releases.has(dependent) && "none" !== releases.get(dependent).type || "always" !== config.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.updateInternalDependents && semver__namespace.default.satisfies(incrementVersion(nextRelease, preInfo), versionRange))) switch (depType) {
+          case "dependencies":
+          case "optionalDependencies":
+          case "peerDependencies":
+@@ -130,7 +140,7 @@ function getDependencyVersionRanges(dependentPkgJSON, dependencyRelease) {
+ }
+ 
+ function shouldBumpMajor({dependent: dependent, depType: depType, versionRange: versionRange, releases: releases, nextRelease: nextRelease, preInfo: preInfo, onlyUpdatePeerDependentsWhenOutOfRange: onlyUpdatePeerDependentsWhenOutOfRange}) {
+-  return "peerDependencies" === depType && "none" !== nextRelease.type && "patch" !== nextRelease.type && (!onlyUpdatePeerDependentsWhenOutOfRange || !semver__default.default.satisfies(incrementVersion(nextRelease, preInfo), versionRange)) && (!releases.has(dependent) || releases.has(dependent) && "major" !== releases.get(dependent).type);
++  return "peerDependencies" === depType && "none" !== nextRelease.type && "patch" !== nextRelease.type && (!onlyUpdatePeerDependentsWhenOutOfRange || !semver__namespace.default.satisfies(incrementVersion(nextRelease, preInfo), versionRange)) && (!releases.has(dependent) || releases.has(dependent) && "major" !== releases.get(dependent).type);
+ }
+ 
+ function flattenReleases(changesets, packagesByName, ignoredPackages) {
+@@ -173,7 +183,7 @@ function getCurrentHighestVersion(packageGroup, packagesByName) {
+     let pkg = packagesByName.get(pkgName);
+     if (!pkg) throw console.error(`FATAL ERROR IN CHANGESETS! We were unable to version for package group: ${pkgName} in package group: ${packageGroup.toString()}`), 
+     new Error("fatal: could not resolve linked packages");
+-    (void 0 === highestVersion || semver__default.default.gt(pkg.packageJson.version, highestVersion)) && (highestVersion = pkg.packageJson.version);
++    (void 0 === highestVersion || semver__namespace.default.gt(pkg.packageJson.version, highestVersion)) && (highestVersion = pkg.packageJson.version);
+   }
+   return highestVersion;
+ }
+@@ -214,7 +224,7 @@ function applyLinks(releases, packagesByName, linked) {
+ }
+ 
+ function getPreVersion(version) {
+-  let parsed = semver.parse(version), preVersion = void 0 === parsed.prerelease[1] ? -1 : parsed.prerelease[1];
++  let parsed = semver__namespace.parse(version), preVersion = void 0 === parsed.prerelease[1] ? -1 : parsed.prerelease[1];
+   if ("number" != typeof preVersion) throw new errors.InternalError("preVersion is not a number");
+   return preVersion++, preVersion;
+ }
+@@ -222,12 +232,12 @@ function getPreVersion(version) {
+ function getSnapshotSuffix(snapshot) {
+   if (void 0 === snapshot) return;
+   let tag = "";
+-  return "string" == typeof snapshot && (tag = "-" + snapshot), `${tag}-${(new Date).toISOString().replace(/\.\d{3}Z$/, "").replace(/[^\d]/g, "")}`;
++  return "string" == typeof snapshot && (tag = `-${snapshot}`), `${tag}-${(new Date).toISOString().replace(/\.\d{3}Z$/, "").replace(/[^\d]/g, "")}`;
+ }
+ 
+ function getNewVersion(release, preInfo, snapshotSuffix, useCalculatedVersionForSnapshots) {
+   if ("none" === release.type) return release.oldVersion;
+-  if (snapshotSuffix && !useCalculatedVersionForSnapshots) return "0.0.0" + snapshotSuffix;
++  if (snapshotSuffix && !useCalculatedVersionForSnapshots) return `0.0.0${snapshotSuffix}`;
+   const calculatedVersion = incrementVersion(release, preInfo);
+   return snapshotSuffix && useCalculatedVersionForSnapshots ? `${calculatedVersion}${snapshotSuffix}` : calculatedVersion;
+ }
+diff --git a/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.esm.js b/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.esm.js
+index e99cddb..5744a9a 100644
+--- a/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.esm.js
++++ b/node_modules/@changesets/assemble-release-plan/dist/assemble-release-plan.esm.js
+@@ -1,4 +1,5 @@
+-import semver, { inc, parse } from 'semver';
++import * as semver from 'semver';
++import semver__default from 'semver';
+ import { InternalError } from '@changesets/errors';
+ import { getDependentsGraph } from '@changesets/get-dependents-graph';
+ 
+@@ -22,10 +23,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -33,19 +33,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -56,7 +49,7 @@ function incrementVersion(release, preInfo) {
+     return release.oldVersion;
+   }
+ 
+-  let version = inc(release.oldVersion, release.type);
++  let version = semver.inc(release.oldVersion, release.type);
+ 
+   if (preInfo !== undefined && preInfo.state.mode !== "exit") {
+     let preVersion = preInfo.preVersions.get(release.name);
+@@ -134,7 +127,7 @@ function determineDependents({
+             type = "major";
+           } else {
+             if ( // TODO validate this - I don't think it's right anymore
+-            (!releases.has(dependent) || releases.get(dependent).type === "none") && (config.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.updateInternalDependents === "always" || !semver.satisfies(incrementVersion(nextRelease, preInfo), versionRange))) {
++            (!releases.has(dependent) || releases.get(dependent).type === "none") && (config.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.updateInternalDependents === "always" || !semver__default.satisfies(incrementVersion(nextRelease, preInfo), versionRange))) {
+               switch (depType) {
+                 case "dependencies":
+                 case "optionalDependencies":
+@@ -247,7 +240,7 @@ function shouldBumpMajor({
+   // we check if it is a peerDependency because if it is, our dependent bump type might need to be major.
+   return depType === "peerDependencies" && nextRelease.type !== "none" && nextRelease.type !== "patch" && ( // 1. If onlyUpdatePeerDependentsWhenOutOfRange set to true, bump major if the version is leaving the range.
+   // 2. If onlyUpdatePeerDependentsWhenOutOfRange set to false, bump major regardless whether or not the version is leaving the range.
+-  !onlyUpdatePeerDependentsWhenOutOfRange || !semver.satisfies(incrementVersion(nextRelease, preInfo), versionRange)) && ( // bump major only if the dependent doesn't already has a major release.
++  !onlyUpdatePeerDependentsWhenOutOfRange || !semver__default.satisfies(incrementVersion(nextRelease, preInfo), versionRange)) && ( // bump major only if the dependent doesn't already has a major release.
+   !releases.has(dependent) || releases.has(dependent) && releases.get(dependent).type !== "major");
+ }
+ 
+@@ -333,7 +326,7 @@ function getCurrentHighestVersion(packageGroup, packagesByName) {
+       throw new Error(`fatal: could not resolve linked packages`);
+     }
+ 
+-    if (highestVersion === undefined || semver.gt(pkg.packageJson.version, highestVersion)) {
++    if (highestVersion === undefined || semver__default.gt(pkg.packageJson.version, highestVersion)) {
+       highestVersion = pkg.packageJson.version;
+     }
+   }
+@@ -425,7 +418,7 @@ function applyLinks(releases, packagesByName, linked) {
+ }
+ 
+ function getPreVersion(version) {
+-  let parsed = parse(version);
++  let parsed = semver.parse(version);
+   let preVersion = parsed.prerelease[1] === undefined ? -1 : parsed.prerelease[1];
+ 
+   if (typeof preVersion !== "number") {
+@@ -623,4 +616,4 @@ function getPreInfo(changesets, packagesByName, config, preState) {
+   };
+ }
+ 
+-export default assembleReleasePlan;
++export { assembleReleasePlan as default };

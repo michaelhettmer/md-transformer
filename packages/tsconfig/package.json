@@ -1,0 +1,20 @@
+{
+  "name": "tsconfig",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "files": [
+    "bob.json",
+    "expo-plugin.json",
+    "hardhat.json",
+    "base.json",
+    "expo.json",
+    "express.json"
+  ],
+  "dependencies": {
+    "tslib": "2.4.0"
+  },
+  "devDependencies": {
+    "typescript": "4.7.3"
+  }
+}

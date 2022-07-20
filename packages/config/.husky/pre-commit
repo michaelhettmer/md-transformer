@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run format
+npm run typecheck
+npx sort-package-json "apps/*/package.json" "packages/*/package.json"

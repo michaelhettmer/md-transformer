@@ -1,0 +1,104 @@
+diff --git a/node_modules/@changesets/get-release-plan/dist/get-release-plan.cjs.dev.js b/node_modules/@changesets/get-release-plan/dist/get-release-plan.cjs.dev.js
+index 621dda3..1ab1de0 100644
+--- a/node_modules/@changesets/get-release-plan/dist/get-release-plan.cjs.dev.js
++++ b/node_modules/@changesets/get-release-plan/dist/get-release-plan.cjs.dev.js
+@@ -33,10 +33,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -44,19 +43,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -67,8 +59,8 @@ async function getReleasePlan(cwd, sinceRef, passedConfig) {
+   const preState = await pre.readPreState(cwd);
+   const readConfig = await config.read(cwd, packages);
+   const config$1 = passedConfig ? _objectSpread2(_objectSpread2({}, readConfig), passedConfig) : readConfig;
+-  const changesets = await readChangesets__default['default'](cwd, sinceRef);
+-  return assembleReleasePlan__default['default'](changesets, packages, config$1, preState);
++  const changesets = await readChangesets__default["default"](cwd, sinceRef);
++  return assembleReleasePlan__default["default"](changesets, packages, config$1, preState);
+ }
+ 
+-exports.default = getReleasePlan;
++exports["default"] = getReleasePlan;
+diff --git a/node_modules/@changesets/get-release-plan/dist/get-release-plan.esm.js b/node_modules/@changesets/get-release-plan/dist/get-release-plan.esm.js
+index 73d4c79..24ca537 100644
+--- a/node_modules/@changesets/get-release-plan/dist/get-release-plan.esm.js
++++ b/node_modules/@changesets/get-release-plan/dist/get-release-plan.esm.js
+@@ -24,10 +24,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -35,19 +34,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -62,4 +54,4 @@ async function getReleasePlan(cwd, sinceRef, passedConfig) {
+   return assembleReleasePlan(changesets, packages, config, preState);
+ }
+ 
+-export default getReleasePlan;
++export { getReleasePlan as default };

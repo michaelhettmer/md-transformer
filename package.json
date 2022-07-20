@@ -1,25 +1,57 @@
 {
-	"name": "obsidian-sample-plugin",
-	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
-	"main": "main.js",
-	"scripts": {
-		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json"
-	},
+	"name": "markdown-transformer",
+	"version": "0.0.0",
+	"private": true,
+	"description": "This is a sample plugin for Obsidian (<https://obsidian.md>).",
 	"keywords": [],
-	"author": "",
-	"license": "MIT",
-	"devDependencies": {
-		"@types/node": "16.11.22",
-		"@typescript-eslint/eslint-plugin": "5.10.2",
-		"@typescript-eslint/parser": "5.10.2",
-		"builtin-modules": "3.2.0",
-		"esbuild": "0.13.15",
-		"obsidian": "0.13.21",
-		"tslib": "2.3.1",
-		"typescript": "4.5.5"
+	"homepage": "https://github.com/MichaelHettmer/markdown-transformer#readme",
+	"bugs": {
+		"url": "https://github.com/MichaelHettmer/markdown-transformer/issues"
 	},
-	"dependencies": {}
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MichaelHettmer/markdown-transformer.git"
+	},
+	"license": "MIT",
+	"author": "",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"change": "changeset add",
+		"change:exit": "changeset pre exit",
+		"change:pre": "changeset pre enter next",
+		"change:publish": "changeset publish",
+		"change:version": "changeset version",
+		"check": "ncu --deep --removeRange",
+		"clean": "turbo run clean && rimraf **/node_modules",
+		"dev": "turbo run dev --parallel",
+		"doctor": "turbo run doctor",
+		"format": "sort-package-json 'package.json' 'apps/*/package.json' 'packages/*/package.json' && prettier --write \"*.{json,js,ts,tsx,md}\" --config packages/config/prettier.config.js && turbo run format --parallel",
+		"postinstall": "patch-package",
+		"lint": "turbo run lint",
+		"prepare": "husky install packages/config/.husky",
+		"start": "turbo run start",
+		"test": "turbo run test",
+		"typecheck": "turbo run typecheck --parallel",
+		"upgrade": "ncu --deep --interactive --removeRange"
+	},
+	"devDependencies": {
+		"@changesets/cli": "2.23.0",
+		"@commitlint/cli": "17.0.2",
+		"@commitlint/config-conventional": "17.0.2",
+		"husky": "8.0.1",
+		"npm-check-updates": "14.0.1",
+		"patch-package": "6.4.7",
+		"prettier": "2.7.1",
+		"rimraf": "3.0.2",
+		"sort-package-json": "1.57.0",
+		"turbo": "1.2.16"
+	},
+	"engines": {
+		"node": ">=16",
+		"npm": ">=8"
+	}
 }

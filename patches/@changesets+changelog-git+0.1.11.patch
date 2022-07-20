@@ -1,0 +1,35 @@
+diff --git a/node_modules/@changesets/changelog-git/dist/changelog-git.cjs.dev.js b/node_modules/@changesets/changelog-git/dist/changelog-git.cjs.dev.js
+index 15f9593..7c4e412 100644
+--- a/node_modules/@changesets/changelog-git/dist/changelog-git.cjs.dev.js
++++ b/node_modules/@changesets/changelog-git/dist/changelog-git.cjs.dev.js
+@@ -25,4 +25,4 @@ const defaultChangelogFunctions = {
+   getDependencyReleaseLine
+ };
+ 
+-exports.default = defaultChangelogFunctions;
++exports["default"] = defaultChangelogFunctions;
+diff --git a/node_modules/@changesets/changelog-git/dist/changelog-git.cjs.prod.js b/node_modules/@changesets/changelog-git/dist/changelog-git.cjs.prod.js
+index e7f2359..5ab9193 100644
+--- a/node_modules/@changesets/changelog-git/dist/changelog-git.cjs.prod.js
++++ b/node_modules/@changesets/changelog-git/dist/changelog-git.cjs.prod.js
+@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", {
+ 
+ const getReleaseLine = async (changeset, _type) => {
+   const [firstLine, ...futureLines] = changeset.summary.split("\n").map((l => l.trimRight()));
+-  let returnVal = `- ${changeset.commit ? changeset.commit + ": " : ""}${firstLine}`;
+-  return futureLines.length > 0 && (returnVal += "\n" + futureLines.map((l => "  " + l)).join("\n")), 
++  let returnVal = `- ${changeset.commit ? `${changeset.commit}: ` : ""}${firstLine}`;
++  return futureLines.length > 0 && (returnVal += `\n${futureLines.map((l => `  ${l}`)).join("\n")}`), 
+   returnVal;
+ }, getDependencyReleaseLine = async (changesets, dependenciesUpdated) => {
+   if (0 === dependenciesUpdated.length) return "";
+diff --git a/node_modules/@changesets/changelog-git/dist/changelog-git.esm.js b/node_modules/@changesets/changelog-git/dist/changelog-git.esm.js
+index 77f044d..cef4a86 100644
+--- a/node_modules/@changesets/changelog-git/dist/changelog-git.esm.js
++++ b/node_modules/@changesets/changelog-git/dist/changelog-git.esm.js
+@@ -21,4 +21,4 @@ const defaultChangelogFunctions = {
+   getDependencyReleaseLine
+ };
+ 
+-export default defaultChangelogFunctions;
++export { defaultChangelogFunctions as default };

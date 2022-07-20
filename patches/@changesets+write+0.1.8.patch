@@ -1,0 +1,138 @@
+diff --git a/node_modules/@changesets/write/dist/write.cjs.dev.js b/node_modules/@changesets/write/dist/write.cjs.dev.js
+index 63d0aff..abd3022 100644
+--- a/node_modules/@changesets/write/dist/write.cjs.dev.js
++++ b/node_modules/@changesets/write/dist/write.cjs.dev.js
+@@ -34,10 +34,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -45,19 +44,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -68,15 +60,15 @@ async function writeChangeset(changeset, cwd) {
+     summary,
+     releases
+   } = changeset;
+-  const changesetBase = path__default['default'].resolve(cwd, ".changeset"); // Worth understanding that the ID merely needs to be a unique hash to avoid git conflicts
++  const changesetBase = path__default["default"].resolve(cwd, ".changeset"); // Worth understanding that the ID merely needs to be a unique hash to avoid git conflicts
+   // experimenting with human readable ids to make finding changesets easier
+ 
+-  const changesetID = humanId__default['default']({
++  const changesetID = humanId__default["default"]({
+     separator: "-",
+     capitalize: false
+   });
+-  const prettierConfig = await prettier__default['default'].resolveConfig(cwd);
+-  const newChangesetPath = path__default['default'].resolve(changesetBase, `${changesetID}.md`); // NOTE: The quotation marks in here are really important even though they are
++  const prettierConfig = await prettier__default["default"].resolveConfig(cwd);
++  const newChangesetPath = path__default["default"].resolve(changesetBase, `${changesetID}.md`); // NOTE: The quotation marks in here are really important even though they are
+   // not spec for yaml. This is because package names can contain special
+   // characters that will otherwise break the parsing step
+ 
+@@ -86,10 +78,10 @@ ${releases.map(release => `"${release.name}": ${release.type}`).join("\n")}
+ 
+ ${summary}
+   `;
+-  await fs__default['default'].writeFile(newChangesetPath, prettier__default['default'].format(changesetContents, _objectSpread2(_objectSpread2({}, prettierConfig), {}, {
++  await fs__default["default"].writeFile(newChangesetPath, prettier__default["default"].format(changesetContents, _objectSpread2(_objectSpread2({}, prettierConfig), {}, {
+     parser: "markdown"
+   })));
+   return changesetID;
+ }
+ 
+-exports.default = writeChangeset;
++exports["default"] = writeChangeset;
+diff --git a/node_modules/@changesets/write/dist/write.cjs.prod.js b/node_modules/@changesets/write/dist/write.cjs.prod.js
+index 4ae28fe..583e3ce 100644
+--- a/node_modules/@changesets/write/dist/write.cjs.prod.js
++++ b/node_modules/@changesets/write/dist/write.cjs.prod.js
+@@ -50,7 +50,7 @@ async function writeChangeset(changeset, cwd) {
+   const {summary: summary, releases: releases} = changeset, changesetBase = path__default.default.resolve(cwd, ".changeset"), changesetID = humanId__default.default({
+     separator: "-",
+     capitalize: !1
+-  }), prettierConfig = await prettier__default.default.resolveConfig(cwd), newChangesetPath = path__default.default.resolve(changesetBase, changesetID + ".md"), changesetContents = `---\n${releases.map((release => `"${release.name}": ${release.type}`)).join("\n")}\n---\n\n${summary}\n  `;
++  }), prettierConfig = await prettier__default.default.resolveConfig(cwd), newChangesetPath = path__default.default.resolve(changesetBase, `${changesetID}.md`), changesetContents = `---\n${releases.map((release => `"${release.name}": ${release.type}`)).join("\n")}\n---\n\n${summary}\n  `;
+   return await fs__default.default.writeFile(newChangesetPath, prettier__default.default.format(changesetContents, _objectSpread2(_objectSpread2({}, prettierConfig), {}, {
+     parser: "markdown"
+   }))), changesetID;
+diff --git a/node_modules/@changesets/write/dist/write.esm.js b/node_modules/@changesets/write/dist/write.esm.js
+index e8769a8..f69d2d4 100644
+--- a/node_modules/@changesets/write/dist/write.esm.js
++++ b/node_modules/@changesets/write/dist/write.esm.js
+@@ -23,10 +23,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -34,19 +33,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -81,4 +73,4 @@ ${summary}
+   return changesetID;
+ }
+ 
+-export default writeChangeset;
++export { writeChangeset as default };

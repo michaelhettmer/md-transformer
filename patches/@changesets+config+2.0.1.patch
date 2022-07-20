@@ -1,0 +1,90 @@
+diff --git a/node_modules/@changesets/config/dist/config.cjs.dev.js b/node_modules/@changesets/config/dist/config.cjs.dev.js
+index 437ce32..7951197 100644
+--- a/node_modules/@changesets/config/dist/config.cjs.dev.js
++++ b/node_modules/@changesets/config/dist/config.cjs.dev.js
+@@ -7,10 +7,30 @@ var path = require('path');
+ var micromatch = require('micromatch');
+ var errors = require('@changesets/errors');
+ var logger = require('@changesets/logger');
++var types = require('@changesets/types');
+ var getDependentsGraph = require('@changesets/get-dependents-graph');
+ 
+ function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
+ 
++function _interopNamespace(e) {
++  if (e && e.__esModule) return e;
++  var n = Object.create(null);
++  if (e) {
++    Object.keys(e).forEach(function (k) {
++      if (k !== 'default') {
++        var d = Object.getOwnPropertyDescriptor(e, k);
++        Object.defineProperty(n, k, d.get ? d : {
++          enumerable: true,
++          get: function () { return e[k]; }
++        });
++      }
++    });
++  }
++  n["default"] = e;
++  return Object.freeze(n);
++}
++
++var fs__namespace = /*#__PURE__*/_interopNamespace(fs);
+ var path__default = /*#__PURE__*/_interopDefault(path);
+ var micromatch__default = /*#__PURE__*/_interopDefault(micromatch);
+ 
+@@ -89,7 +109,7 @@ function getNormalizedCommitOption(thing) {
+ }
+ 
+ function getUnmatchedPatterns(listOfPackageNamesOrGlob, pkgNames) {
+-  return listOfPackageNamesOrGlob.filter(pkgNameOrGlob => !pkgNames.some(pkgName => micromatch__default['default'].isMatch(pkgName, pkgNameOrGlob)));
++  return listOfPackageNamesOrGlob.filter(pkgNameOrGlob => !pkgNames.some(pkgName => micromatch__default["default"].isMatch(pkgName, pkgNameOrGlob)));
+ }
+ 
+ const havePackageGroupsCorrectShape = pkgGroups => {
+@@ -103,7 +123,7 @@ function isArray(arg) {
+ }
+ 
+ let read = async (cwd, packages) => {
+-  let json = await fs.readJSON(path__default['default'].join(cwd, ".changeset", "config.json"));
++  let json = await fs__namespace.readJSON(path__default["default"].join(cwd, ".changeset", "config.json"));
+   return parse(json, packages);
+ };
+ let parse = (json, packages) => {
+@@ -148,7 +168,7 @@ let parse = (json, packages) => {
+ 
+       for (let fixedGroup of json.fixed) {
+         messages.push(...getUnmatchedPatterns(fixedGroup, pkgNames).map(pkgOrGlob => `The package or glob expression "${pkgOrGlob}" specified in the \`fixed\` option does not match any package in the project. You may have misspelled the package name or provided an invalid glob expression. Note that glob expressions must be defined according to https://www.npmjs.com/package/micromatch.`));
+-        let expandedFixedGroup = micromatch__default['default'](pkgNames, fixedGroup);
++        let expandedFixedGroup = micromatch__default["default"](pkgNames, fixedGroup);
+         fixed.push(expandedFixedGroup);
+ 
+         for (let fixedPkgName of expandedFixedGroup) {
+@@ -179,7 +199,7 @@ let parse = (json, packages) => {
+ 
+       for (let linkedGroup of json.linked) {
+         messages.push(...getUnmatchedPatterns(linkedGroup, pkgNames).map(pkgOrGlob => `The package or glob expression "${pkgOrGlob}" specified in the \`linked\` option does not match any package in the project. You may have misspelled the package name or provided an invalid glob expression. Note that glob expressions must be defined according to https://www.npmjs.com/package/micromatch.`));
+-        let expandedLinkedGroup = micromatch__default['default'](pkgNames, linkedGroup);
++        let expandedLinkedGroup = micromatch__default["default"](pkgNames, linkedGroup);
+         linked.push(expandedLinkedGroup);
+ 
+         for (let linkedPkgName of expandedLinkedGroup) {
+@@ -263,13 +283,16 @@ let parse = (json, packages) => {
+     linked,
+     baseBranch: json.baseBranch === undefined ? defaultWrittenConfig.baseBranch : json.baseBranch,
+     updateInternalDependencies: json.updateInternalDependencies === undefined ? defaultWrittenConfig.updateInternalDependencies : json.updateInternalDependencies,
+-    ignore: json.ignore === undefined ? defaultWrittenConfig.ignore : micromatch__default['default'](pkgNames, json.ignore),
++    ignore: json.ignore === undefined ? defaultWrittenConfig.ignore : micromatch__default["default"](pkgNames, json.ignore),
+     bumpVersionsWithWorkspaceProtocolOnly: json.bumpVersionsWithWorkspaceProtocolOnly === true,
+     ___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH: {
+       onlyUpdatePeerDependentsWhenOutOfRange: json.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH === undefined || json.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.onlyUpdatePeerDependentsWhenOutOfRange === undefined ? false : json.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.onlyUpdatePeerDependentsWhenOutOfRange,
+       updateInternalDependents: (_json$___experimental = (_json$___experimental2 = json.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH) === null || _json$___experimental2 === void 0 ? void 0 : _json$___experimental2.updateInternalDependents) !== null && _json$___experimental !== void 0 ? _json$___experimental : "out-of-range",
+       useCalculatedVersionForSnapshots: json.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH === undefined || json.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.useCalculatedVersionForSnapshots === undefined ? false : json.___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.useCalculatedVersionForSnapshots
+-    }
++    },
++    // TODO consider enabling this by default in the next major version
++    privatePackages: json.privatePackages === "ignore" ? types.PrivatePackages.Ignore : json.privatePackages === "version-and-tag" ? types.PrivatePackages.VersionAndTag : // Default value
++    types.PrivatePackages.Version
+   };
+   return config;
+ };

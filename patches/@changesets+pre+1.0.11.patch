@@ -1,0 +1,251 @@
+diff --git a/node_modules/@changesets/pre/dist/pre.cjs.dev.js b/node_modules/@changesets/pre/dist/pre.cjs.dev.js
+index 41a8585..bf832bc 100644
+--- a/node_modules/@changesets/pre/dist/pre.cjs.dev.js
++++ b/node_modules/@changesets/pre/dist/pre.cjs.dev.js
+@@ -9,6 +9,25 @@ var errors = require('@changesets/errors');
+ 
+ function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
+ 
++function _interopNamespace(e) {
++  if (e && e.__esModule) return e;
++  var n = Object.create(null);
++  if (e) {
++    Object.keys(e).forEach(function (k) {
++      if (k !== 'default') {
++        var d = Object.getOwnPropertyDescriptor(e, k);
++        Object.defineProperty(n, k, d.get ? d : {
++          enumerable: true,
++          get: function () { return e[k]; }
++        });
++      }
++    });
++  }
++  n["default"] = e;
++  return Object.freeze(n);
++}
++
++var fs__namespace = /*#__PURE__*/_interopNamespace(fs);
+ var path__default = /*#__PURE__*/_interopDefault(path);
+ 
+ function _defineProperty(obj, key, value) {
+@@ -31,10 +50,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -42,31 +60,24 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+ }
+ 
+ async function readPreState(cwd) {
+-  let preStatePath = path__default['default'].resolve(cwd, ".changeset", "pre.json"); // TODO: verify that the pre state isn't broken
++  let preStatePath = path__default["default"].resolve(cwd, ".changeset", "pre.json"); // TODO: verify that the pre state isn't broken
+ 
+   let preState;
+ 
+   try {
+-    let contents = await fs.readFile(preStatePath, "utf8");
++    let contents = await fs__namespace.readFile(preStatePath, "utf8");
+ 
+     try {
+       preState = JSON.parse(contents);
+@@ -86,7 +97,7 @@ async function readPreState(cwd) {
+   return preState;
+ }
+ async function exitPre(cwd) {
+-  let preStatePath = path__default['default'].resolve(cwd, ".changeset", "pre.json"); // TODO: verify that the pre state isn't broken
++  let preStatePath = path__default["default"].resolve(cwd, ".changeset", "pre.json"); // TODO: verify that the pre state isn't broken
+ 
+   let preState = await readPreState(cwd);
+ 
+@@ -94,7 +105,7 @@ async function exitPre(cwd) {
+     throw new errors.PreExitButNotInPreModeError();
+   }
+ 
+-  await fs.writeFile(preStatePath, JSON.stringify(_objectSpread2(_objectSpread2({}, preState), {}, {
++  await fs__namespace.writeFile(preStatePath, JSON.stringify(_objectSpread2(_objectSpread2({}, preState), {}, {
+     mode: "exit"
+   }), null, 2) + "\n");
+ }
+@@ -102,7 +113,7 @@ async function enterPre(cwd, tag) {
+   var _preState$changesets;
+ 
+   let packages = await getPackages.getPackages(cwd);
+-  let preStatePath = path__default['default'].resolve(packages.root.dir, ".changeset", "pre.json");
++  let preStatePath = path__default["default"].resolve(packages.root.dir, ".changeset", "pre.json");
+   let preState = await readPreState(packages.root.dir); // can't reenter if pre mode still exists, but we should allow exited pre mode to be reentered
+ 
+   if ((preState === null || preState === void 0 ? void 0 : preState.mode) === "pre") {
+@@ -120,7 +131,7 @@ async function enterPre(cwd, tag) {
+     newPreState.initialVersions[pkg.packageJson.name] = pkg.packageJson.version;
+   }
+ 
+-  await fs.writeFile(preStatePath, JSON.stringify(newPreState, null, 2) + "\n");
++  await fs__namespace.writeFile(preStatePath, JSON.stringify(newPreState, null, 2) + "\n");
+ }
+ 
+ exports.enterPre = enterPre;
+diff --git a/node_modules/@changesets/pre/dist/pre.cjs.prod.js b/node_modules/@changesets/pre/dist/pre.cjs.prod.js
+index f40a0d4..37d2a6a 100644
+--- a/node_modules/@changesets/pre/dist/pre.cjs.prod.js
++++ b/node_modules/@changesets/pre/dist/pre.cjs.prod.js
+@@ -12,7 +12,23 @@ function _interopDefault(e) {
+   };
+ }
+ 
+-var path__default = _interopDefault(path);
++function _interopNamespace(e) {
++  if (e && e.__esModule) return e;
++  var n = Object.create(null);
++  return e && Object.keys(e).forEach((function(k) {
++    if ("default" !== k) {
++      var d = Object.getOwnPropertyDescriptor(e, k);
++      Object.defineProperty(n, k, d.get ? d : {
++        enumerable: !0,
++        get: function() {
++          return e[k];
++        }
++      });
++    }
++  })), n.default = e, Object.freeze(n);
++}
++
++var fs__namespace = _interopNamespace(fs), path__default = _interopDefault(path);
+ 
+ function _defineProperty(obj, key, value) {
+   return key in obj ? Object.defineProperty(obj, key, {
+@@ -49,7 +65,7 @@ function _objectSpread2(target) {
+ async function readPreState(cwd) {
+   let preState, preStatePath = path__default.default.resolve(cwd, ".changeset", "pre.json");
+   try {
+-    let contents = await fs.readFile(preStatePath, "utf8");
++    let contents = await fs__namespace.readFile(preStatePath, "utf8");
+     try {
+       preState = JSON.parse(contents);
+     } catch (err) {
+@@ -65,7 +81,7 @@ async function readPreState(cwd) {
+ async function exitPre(cwd) {
+   let preStatePath = path__default.default.resolve(cwd, ".changeset", "pre.json"), preState = await readPreState(cwd);
+   if (void 0 === preState) throw new errors.PreExitButNotInPreModeError;
+-  await fs.writeFile(preStatePath, JSON.stringify(_objectSpread2(_objectSpread2({}, preState), {}, {
++  await fs__namespace.writeFile(preStatePath, JSON.stringify(_objectSpread2(_objectSpread2({}, preState), {}, {
+     mode: "exit"
+   }), null, 2) + "\n");
+ }
+@@ -81,7 +97,7 @@ async function enterPre(cwd, tag) {
+     changesets: null !== (_preState$changesets = null == preState ? void 0 : preState.changesets) && void 0 !== _preState$changesets ? _preState$changesets : []
+   };
+   for (let pkg of packages.packages) newPreState.initialVersions[pkg.packageJson.name] = pkg.packageJson.version;
+-  await fs.writeFile(preStatePath, JSON.stringify(newPreState, null, 2) + "\n");
++  await fs__namespace.writeFile(preStatePath, JSON.stringify(newPreState, null, 2) + "\n");
+ }
+ 
+ exports.enterPre = enterPre, exports.exitPre = exitPre, exports.readPreState = readPreState;
+diff --git a/node_modules/@changesets/pre/dist/pre.esm.js b/node_modules/@changesets/pre/dist/pre.esm.js
+index 9ed9ab3..707b2c9 100644
+--- a/node_modules/@changesets/pre/dist/pre.esm.js
++++ b/node_modules/@changesets/pre/dist/pre.esm.js
+@@ -1,4 +1,4 @@
+-import { readFile, writeFile } from 'fs-extra';
++import * as fs from 'fs-extra';
+ import path from 'path';
+ import { getPackages } from '@manypkg/get-packages';
+ import { PreExitButNotInPreModeError, PreEnterButInPreModeError } from '@changesets/errors';
+@@ -23,10 +23,9 @@ function ownKeys(object, enumerableOnly) {
+ 
+   if (Object.getOwnPropertySymbols) {
+     var symbols = Object.getOwnPropertySymbols(object);
+-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
++    enumerableOnly && (symbols = symbols.filter(function (sym) {
+       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+-    });
+-    keys.push.apply(keys, symbols);
++    })), keys.push.apply(keys, symbols);
+   }
+ 
+   return keys;
+@@ -34,19 +33,12 @@ function ownKeys(object, enumerableOnly) {
+ 
+ function _objectSpread2(target) {
+   for (var i = 1; i < arguments.length; i++) {
+-    var source = arguments[i] != null ? arguments[i] : {};
+-
+-    if (i % 2) {
+-      ownKeys(Object(source), true).forEach(function (key) {
+-        _defineProperty(target, key, source[key]);
+-      });
+-    } else if (Object.getOwnPropertyDescriptors) {
+-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+-    } else {
+-      ownKeys(Object(source)).forEach(function (key) {
+-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+-      });
+-    }
++    var source = null != arguments[i] ? arguments[i] : {};
++    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
++      _defineProperty(target, key, source[key]);
++    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
++      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
++    });
+   }
+ 
+   return target;
+@@ -58,7 +50,7 @@ async function readPreState(cwd) {
+   let preState;
+ 
+   try {
+-    let contents = await readFile(preStatePath, "utf8");
++    let contents = await fs.readFile(preStatePath, "utf8");
+ 
+     try {
+       preState = JSON.parse(contents);
+@@ -86,7 +78,7 @@ async function exitPre(cwd) {
+     throw new PreExitButNotInPreModeError();
+   }
+ 
+-  await writeFile(preStatePath, JSON.stringify(_objectSpread2(_objectSpread2({}, preState), {}, {
++  await fs.writeFile(preStatePath, JSON.stringify(_objectSpread2(_objectSpread2({}, preState), {}, {
+     mode: "exit"
+   }), null, 2) + "\n");
+ }
+@@ -112,7 +104,7 @@ async function enterPre(cwd, tag) {
+     newPreState.initialVersions[pkg.packageJson.name] = pkg.packageJson.version;
+   }
+ 
+-  await writeFile(preStatePath, JSON.stringify(newPreState, null, 2) + "\n");
++  await fs.writeFile(preStatePath, JSON.stringify(newPreState, null, 2) + "\n");
+ }
+ 
+ export { enterPre, exitPre, readPreState };

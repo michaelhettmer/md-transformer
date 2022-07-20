@@ -1,0 +1,285 @@
+diff --git a/node_modules/@changesets/git/dist/declarations/src/index.d.ts b/node_modules/@changesets/git/dist/declarations/src/index.d.ts
+index 283df19..e7cbc91 100644
+--- a/node_modules/@changesets/git/dist/declarations/src/index.d.ts
++++ b/node_modules/@changesets/git/dist/declarations/src/index.d.ts
+@@ -32,3 +32,5 @@ export declare function getChangedPackagesSinceRef({ cwd, ref }: {
+     cwd: string;
+     ref: string;
+ }): Promise<Package[]>;
++export declare function tagExists(tagStr: string): Promise<boolean>;
++export declare function remoteTagExists(tagStr: string): Promise<boolean>;
+diff --git a/node_modules/@changesets/git/dist/git.cjs.dev.js b/node_modules/@changesets/git/dist/git.cjs.dev.js
+index c7a8e91..261fad6 100644
+--- a/node_modules/@changesets/git/dist/git.cjs.dev.js
++++ b/node_modules/@changesets/git/dist/git.cjs.dev.js
+@@ -17,10 +17,10 @@ var fs__default = /*#__PURE__*/_interopDefault(fs);
+ var path__default = /*#__PURE__*/_interopDefault(path);
+ var isSubdir__default = /*#__PURE__*/_interopDefault(isSubdir);
+ 
+-const isInDir = dir => subdir => isSubdir__default['default'](dir, subdir);
++const isInDir = dir => subdir => isSubdir__default["default"](dir, subdir);
+ 
+ async function add(pathToFile, cwd) {
+-  const gitCmd = await spawn__default['default']("git", ["add", pathToFile], {
++  const gitCmd = await spawn__default["default"]("git", ["add", pathToFile], {
+     cwd
+   });
+ 
+@@ -31,13 +31,13 @@ async function add(pathToFile, cwd) {
+   return gitCmd.code === 0;
+ }
+ async function commit(message, cwd) {
+-  const gitCmd = await spawn__default['default']("git", ["commit", "-m", message, "--allow-empty"], {
++  const gitCmd = await spawn__default["default"]("git", ["commit", "-m", message, "--allow-empty"], {
+     cwd
+   });
+   return gitCmd.code === 0;
+ }
+ async function getAllTags(cwd) {
+-  const gitCmd = await spawn__default['default']("git", ["tag"], {
++  const gitCmd = await spawn__default["default"]("git", ["tag"], {
+     cwd
+   });
+ 
+@@ -52,14 +52,14 @@ async function getAllTags(cwd) {
+ async function tag(tagStr, cwd) {
+   // NOTE: it's important we use the -m flag to create annotated tag otherwise 'git push --follow-tags' won't actually push
+   // the tags
+-  const gitCmd = await spawn__default['default']("git", ["tag", tagStr, "-m", tagStr], {
++  const gitCmd = await spawn__default["default"]("git", ["tag", tagStr, "-m", tagStr], {
+     cwd
+   });
+   return gitCmd.code === 0;
+ } // Find the commit where we diverged from `ref` at using `git merge-base`
+ 
+ async function getDivergedCommit(cwd, ref) {
+-  const cmd = await spawn__default['default']("git", ["merge-base", ref, "HEAD"], {
++  const cmd = await spawn__default["default"]("git", ["merge-base", ref, "HEAD"], {
+     cwd
+   });
+ 
+@@ -88,7 +88,7 @@ async function getCommitsThatAddFiles(gitPaths, cwd) {
+   do {
+     // Fetch commit information for all paths we don't have yet
+     const commitInfos = await Promise.all(remaining.map(async gitPath => {
+-      const [commitSha, parentSha] = (await spawn__default['default']("git", ["log", "--diff-filter=A", "--max-count=1", "--pretty=format:%h:%p", gitPath], {
++      const [commitSha, parentSha] = (await spawn__default["default"]("git", ["log", "--diff-filter=A", "--max-count=1", "--pretty=format:%h:%p", gitPath], {
+         cwd
+       })).stdout.toString().split(":");
+       return {
+@@ -144,7 +144,7 @@ async function getCommitsThatAddFiles(gitPaths, cwd) {
+ async function isRepoShallow({
+   cwd
+ }) {
+-  const isShallowRepoOutput = (await spawn__default['default']("git", ["rev-parse", "--is-shallow-repository"], {
++  const isShallowRepoOutput = (await spawn__default["default"]("git", ["rev-parse", "--is-shallow-repository"], {
+     cwd
+   })).stdout.toString().trim();
+ 
+@@ -152,12 +152,12 @@ async function isRepoShallow({
+     // We have an old version of Git (<2.15) which doesn't support `rev-parse --is-shallow-repository`
+     // In that case, we'll test for the existence of .git/shallow.
+     // Firstly, find the .git folder for the repo; note that this will be relative to the repo dir
+-    const gitDir = (await spawn__default['default']("git", ["rev-parse", "--git-dir"], {
++    const gitDir = (await spawn__default["default"]("git", ["rev-parse", "--git-dir"], {
+       cwd
+     })).stdout.toString().trim();
+-    const fullGitDir = path__default['default'].resolve(cwd, gitDir); // Check for the existence of <gitDir>/shallow
++    const fullGitDir = path__default["default"].resolve(cwd, gitDir); // Check for the existence of <gitDir>/shallow
+ 
+-    return fs__default['default'].existsSync(path__default['default'].join(fullGitDir, "shallow"));
++    return fs__default["default"].existsSync(path__default["default"].join(fullGitDir, "shallow"));
+   } else {
+     // We have a newer Git which supports `rev-parse --is-shallow-repository`. We'll use
+     // the output of that instead of messing with .git/shallow in case that changes in the future.
+@@ -168,7 +168,7 @@ async function deepenCloneBy({
+   by,
+   cwd
+ }) {
+-  await spawn__default['default']("git", ["fetch", `--deepen=${by}`], {
++  await spawn__default["default"]("git", ["fetch", `--deepen=${by}`], {
+     cwd
+   });
+ }
+@@ -180,7 +180,7 @@ async function getRepoRoot({
+     stdout,
+     code,
+     stderr
+-  } = await spawn__default['default']("git", ["rev-parse", "--show-toplevel"], {
++  } = await spawn__default["default"]("git", ["rev-parse", "--show-toplevel"], {
+     cwd
+   });
+ 
+@@ -198,7 +198,7 @@ async function getChangedFilesSince({
+ }) {
+   const divergedAt = await getDivergedCommit(cwd, ref); // Now we can find which files we added
+ 
+-  const cmd = await spawn__default['default']("git", ["diff", "--name-only", divergedAt], {
++  const cmd = await spawn__default["default"]("git", ["diff", "--name-only", divergedAt], {
+     cwd
+   });
+ 
+@@ -211,7 +211,7 @@ async function getChangedFilesSince({
+   const repoRoot = await getRepoRoot({
+     cwd
+   });
+-  return files.map(file => path__default['default'].resolve(repoRoot, file));
++  return files.map(file => path__default["default"].resolve(repoRoot, file));
+ } // below are less generic functions that we use in combination with other things we are doing
+ 
+ async function getChangedChangesetFilesSinceRef({
+@@ -221,7 +221,7 @@ async function getChangedChangesetFilesSinceRef({
+   try {
+     const divergedAt = await getDivergedCommit(cwd, ref); // Now we can find which files we added
+ 
+-    const cmd = await spawn__default['default']("git", ["diff", "--name-only", "--diff-filter=d", divergedAt], {
++    const cmd = await spawn__default["default"]("git", ["diff", "--name-only", "--diff-filter=d", divergedAt], {
+       cwd
+     });
+     let tester = /.changeset\/[^/]+\.md$/;
+@@ -252,6 +252,18 @@ async function getChangedPackagesSinceRef({
+   return Object.values(fileToPackage) // filter, so that we have only unique packages
+   .filter((pkg, idx, packages) => packages.indexOf(pkg) === idx);
+ }
++async function tagExists(tagStr) {
++  const gitCmd = await spawn__default["default"]("git", ["tag", "-l", tagStr]);
++  const output = gitCmd.stdout.toString().trim();
++  const tagExists = !!output;
++  return tagExists;
++}
++async function remoteTagExists(tagStr) {
++  const gitCmd = await spawn__default["default"]("git", ["ls-remote", "--tags", "origin", "-l", tagStr]);
++  const output = gitCmd.stdout.toString().trim();
++  const tagExists = !!output;
++  return tagExists;
++}
+ 
+ exports.add = add;
+ exports.commit = commit;
+@@ -264,4 +276,6 @@ exports.getCommitThatAddsFile = getCommitThatAddsFile;
+ exports.getCommitsThatAddFiles = getCommitsThatAddFiles;
+ exports.getDivergedCommit = getDivergedCommit;
+ exports.isRepoShallow = isRepoShallow;
++exports.remoteTagExists = remoteTagExists;
+ exports.tag = tag;
++exports.tagExists = tagExists;
+diff --git a/node_modules/@changesets/git/dist/git.cjs.prod.js b/node_modules/@changesets/git/dist/git.cjs.prod.js
+index 7fc9a15..21e2b83 100644
+--- a/node_modules/@changesets/git/dist/git.cjs.prod.js
++++ b/node_modules/@changesets/git/dist/git.cjs.prod.js
+@@ -99,7 +99,7 @@ async function isRepoShallow({cwd: cwd}) {
+ }
+ 
+ async function deepenCloneBy({by: by, cwd: cwd}) {
+-  await spawn__default.default("git", [ "fetch", "--deepen=" + by ], {
++  await spawn__default.default("git", [ "fetch", `--deepen=${by}` ], {
+     cwd: cwd
+   });
+ }
+@@ -157,9 +157,17 @@ async function getChangedPackagesSinceRef({cwd: cwd, ref: ref}) {
+   })), Object.values(fileToPackage).filter(((pkg, idx, packages) => packages.indexOf(pkg) === idx));
+ }
+ 
++async function tagExists(tagStr) {
++  return !!(await spawn__default.default("git", [ "tag", "-l", tagStr ])).stdout.toString().trim();
++}
++
++async function remoteTagExists(tagStr) {
++  return !!(await spawn__default.default("git", [ "ls-remote", "--tags", "origin", "-l", tagStr ])).stdout.toString().trim();
++}
++
+ exports.add = add, exports.commit = commit, exports.deepenCloneBy = deepenCloneBy, 
+ exports.getAllTags = getAllTags, exports.getChangedChangesetFilesSinceRef = getChangedChangesetFilesSinceRef, 
+ exports.getChangedFilesSince = getChangedFilesSince, exports.getChangedPackagesSinceRef = getChangedPackagesSinceRef, 
+ exports.getCommitThatAddsFile = getCommitThatAddsFile, exports.getCommitsThatAddFiles = getCommitsThatAddFiles, 
+ exports.getDivergedCommit = getDivergedCommit, exports.isRepoShallow = isRepoShallow, 
+-exports.tag = tag;
++exports.remoteTagExists = remoteTagExists, exports.tag = tag, exports.tagExists = tagExists;
+diff --git a/node_modules/@changesets/git/dist/git.esm.js b/node_modules/@changesets/git/dist/git.esm.js
+index c9b0c31..864c333 100644
+--- a/node_modules/@changesets/git/dist/git.esm.js
++++ b/node_modules/@changesets/git/dist/git.esm.js
+@@ -241,5 +241,17 @@ async function getChangedPackagesSinceRef({
+   return Object.values(fileToPackage) // filter, so that we have only unique packages
+   .filter((pkg, idx, packages) => packages.indexOf(pkg) === idx);
+ }
++async function tagExists(tagStr) {
++  const gitCmd = await spawn("git", ["tag", "-l", tagStr]);
++  const output = gitCmd.stdout.toString().trim();
++  const tagExists = !!output;
++  return tagExists;
++}
++async function remoteTagExists(tagStr) {
++  const gitCmd = await spawn("git", ["ls-remote", "--tags", "origin", "-l", tagStr]);
++  const output = gitCmd.stdout.toString().trim();
++  const tagExists = !!output;
++  return tagExists;
++}
+ 
+-export { add, commit, deepenCloneBy, getAllTags, getChangedChangesetFilesSinceRef, getChangedFilesSince, getChangedPackagesSinceRef, getCommitThatAddsFile, getCommitsThatAddFiles, getDivergedCommit, isRepoShallow, tag };
++export { add, commit, deepenCloneBy, getAllTags, getChangedChangesetFilesSinceRef, getChangedFilesSince, getChangedPackagesSinceRef, getCommitThatAddsFile, getCommitsThatAddFiles, getDivergedCommit, isRepoShallow, remoteTagExists, tag, tagExists };
+diff --git a/node_modules/@changesets/git/src/index.test.ts b/node_modules/@changesets/git/src/index.test.ts
+index 6eda5a9..125c508 100644
+--- a/node_modules/@changesets/git/src/index.test.ts
++++ b/node_modules/@changesets/git/src/index.test.ts
+@@ -12,7 +12,8 @@ import {
+   getDivergedCommit,
+   getChangedPackagesSinceRef,
+   getChangedChangesetFilesSinceRef,
+-  getAllTags
++  getAllTags,
++  tagExists
+ } from "./";
+ 
+ const f = fixtures(__dirname);
+@@ -226,6 +227,22 @@ describe("git", () => {
+     });
+   });
+ 
++  describe("tagExists", () => {
++    it("returns false when no tag exists", async () => {
++      await add("packages/pkg-a/package.json", cwd);
++      await commit("added packageA package.json", cwd);
++      expect(await tagExists("tag_name")).toBe(false);
++    });
++
++    it("should create a tag for the current head", async () => {
++      await add("packages/pkg-a/package.json", cwd);
++      await commit("added packageA package.json", cwd);
++      await tag("tag_message", cwd);
++
++      expect(await tagExists("tag_name")).toBe(false);
++    });
++  });
++
+   describe("getCommitsThatAddFiles", () => {
+     it("should commit a file and get the hash of that commit", async () => {
+       await add("packages/pkg-b/package.json", cwd);
+diff --git a/node_modules/@changesets/git/src/index.ts b/node_modules/@changesets/git/src/index.ts
+index eebc903..b7ed046 100644
+--- a/node_modules/@changesets/git/src/index.ts
++++ b/node_modules/@changesets/git/src/index.ts
+@@ -286,3 +286,23 @@ export async function getChangedPackagesSinceRef({
+       .filter((pkg, idx, packages) => packages.indexOf(pkg) === idx)
+   );
+ }
++
++export async function tagExists(tagStr: string) {
++  const gitCmd = await spawn("git", ["tag", "-l", tagStr]);
++  const output = gitCmd.stdout.toString().trim();
++  const tagExists = !!output;
++  return tagExists;
++}
++
++export async function remoteTagExists(tagStr: string) {
++  const gitCmd = await spawn("git", [
++    "ls-remote",
++    "--tags",
++    "origin",
++    "-l",
++    tagStr
++  ]);
++  const output = gitCmd.stdout.toString().trim();
++  const tagExists = !!output;
++  return tagExists;
++}

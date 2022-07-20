@@ -1,0 +1,44 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"baseBranch": "origin/main",
+	"pipeline": {
+		"doctor": {
+			"cache": false
+		},
+		"dev": {
+			"cache": false
+		},
+		"start": {
+			"dependsOn": ["build"]
+		},
+		"typecheck": {
+			"inputs": ["**/*.tsx", "**/*.ts"],
+			"outputs": []
+		},
+		"prepare": {
+			"dependsOn": ["^prepare"]
+		},
+		"build": {
+			"dependsOn": ["^build", "prepare"],
+			"inputs": ["**/*.ts", "**/*.json"],
+			"outputs": ["dist/**", "build/**", "artifacts/**", ".next/**", "tsconfig.tsbuildinfo"]
+		},
+		"test": {
+			"dependsOn": ["build"],
+			"inputs": ["src/**/*.ts", "test/**/*.ts", "src/**/*.tsx", "test/**/*.tsx"],
+			"outputs": []
+		},
+		"lint": {
+			"inputs": ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.js", "**/*.json"],
+			"outputs": []
+		},
+		"format": {
+			"inputs": ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.js", "**/*.json"],
+			"outputs": []
+		},
+		"clean": {
+			"inputs": [],
+			"outputs": []
+		}
+	}
+}

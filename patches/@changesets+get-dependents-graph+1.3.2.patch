@@ -1,0 +1,22 @@
+diff --git a/node_modules/@changesets/get-dependents-graph/dist/get-dependents-graph.cjs.dev.js b/node_modules/@changesets/get-dependents-graph/dist/get-dependents-graph.cjs.dev.js
+index 9bd1b9d..76fd3e7 100644
+--- a/node_modules/@changesets/get-dependents-graph/dist/get-dependents-graph.cjs.dev.js
++++ b/node_modules/@changesets/get-dependents-graph/dist/get-dependents-graph.cjs.dev.js
+@@ -42,7 +42,7 @@ const getValidRange = potentialRange => {
+   }
+ 
+   try {
+-    return new semver__default['default'].Range(potentialRange);
++    return new semver__default["default"].Range(potentialRange);
+   } catch (_unused) {
+     return null;
+   }
+@@ -89,7 +89,7 @@ function getDependencyGraph(packages, opts) {
+ 
+       if (range && !range.test(expected) || isProtocolRange(depRange)) {
+         valid = false;
+-        console.error(`Package ${chalk__default['default'].cyan(`"${name}"`)} must depend on the current version of ${chalk__default['default'].cyan(`"${depName}"`)}: ${chalk__default['default'].green(`"${expected}"`)} vs ${chalk__default['default'].red(`"${depRange}"`)}`);
++        console.error(`Package ${chalk__default["default"].cyan(`"${name}"`)} must depend on the current version of ${chalk__default["default"].cyan(`"${depName}"`)}: ${chalk__default["default"].green(`"${expected}"`)} vs ${chalk__default["default"].red(`"${depRange}"`)}`);
+         continue;
+       } // `depRange` could have been a tag and if a tag has been used there might have been a reason for that
+       // we should not count this as a local monorepro dependant

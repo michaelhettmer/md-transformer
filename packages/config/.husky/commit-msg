@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "commit-msg testtest $(dirname "$0")"
+npx commitlint --edit "$1"

@@ -1,0 +1,54 @@
+diff --git a/node_modules/@changesets/parse/dist/parse.cjs.dev.js b/node_modules/@changesets/parse/dist/parse.cjs.dev.js
+index 9ed594d..53793c5 100644
+--- a/node_modules/@changesets/parse/dist/parse.cjs.dev.js
++++ b/node_modules/@changesets/parse/dist/parse.cjs.dev.js
+@@ -21,7 +21,7 @@ function parseChangesetFile(contents) {
+   let releases;
+ 
+   try {
+-    const yamlStuff = yaml__default['default'].safeLoad(roughReleases);
++    const yamlStuff = yaml__default["default"].safeLoad(roughReleases);
+ 
+     if (yamlStuff) {
+       releases = Object.entries(yamlStuff).map(([name, type]) => ({
+@@ -45,4 +45,4 @@ function parseChangesetFile(contents) {
+   };
+ }
+ 
+-exports.default = parseChangesetFile;
++exports["default"] = parseChangesetFile;
+diff --git a/node_modules/@changesets/parse/dist/parse.cjs.prod.js b/node_modules/@changesets/parse/dist/parse.cjs.prod.js
+index acb63dc..ddcd047 100644
+--- a/node_modules/@changesets/parse/dist/parse.cjs.prod.js
++++ b/node_modules/@changesets/parse/dist/parse.cjs.prod.js
+@@ -18,7 +18,7 @@ const mdRegex = /\s*---([^]*?)\n\s*---(\s*(?:\n|$)[^]*)/;
+ 
+ function parseChangesetFile(contents) {
+   const execResult = mdRegex.exec(contents);
+-  if (!execResult) throw new Error("could not parse changeset - invalid frontmatter: " + contents);
++  if (!execResult) throw new Error(`could not parse changeset - invalid frontmatter: ${contents}`);
+   let releases, [, roughReleases, roughSummary] = execResult, summary = roughSummary.trim();
+   try {
+     const yamlStuff = yaml__default.default.safeLoad(roughReleases);
+@@ -27,9 +27,9 @@ function parseChangesetFile(contents) {
+       type: type
+     }))) : [];
+   } catch (e) {
+-    throw new Error("could not parse changeset - invalid frontmatter: " + contents);
++    throw new Error(`could not parse changeset - invalid frontmatter: ${contents}`);
+   }
+-  if (!releases) throw new Error("could not parse changeset - unknown error: " + contents);
++  if (!releases) throw new Error(`could not parse changeset - unknown error: ${contents}`);
+   return {
+     releases: releases,
+     summary: summary
+diff --git a/node_modules/@changesets/parse/dist/parse.esm.js b/node_modules/@changesets/parse/dist/parse.esm.js
+index ec9f8b6..a48e06b 100644
+--- a/node_modules/@changesets/parse/dist/parse.esm.js
++++ b/node_modules/@changesets/parse/dist/parse.esm.js
+@@ -37,4 +37,4 @@ function parseChangesetFile(contents) {
+   };
+ }
+ 
+-export default parseChangesetFile;
++export { parseChangesetFile as default };

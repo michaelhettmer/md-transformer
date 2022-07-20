@@ -1,0 +1,80 @@
+diff --git a/node_modules/@changesets/get-version-range-type/CHANGELOG.md b/node_modules/@changesets/get-version-range-type/CHANGELOG.md
+index acfd925..4eb1660 100644
+--- a/node_modules/@changesets/get-version-range-type/CHANGELOG.md
++++ b/node_modules/@changesets/get-version-range-type/CHANGELOG.md
+@@ -4,37 +4,37 @@
+ 
+ ### Patch Changes
+ 
+-- [`1706fb7`](https://github.com/atlassian/changesets/commit/1706fb751ecc2f5a792c42f467b2063078d58716) [#321](https://github.com/atlassian/changesets/pull/321) Thanks [@mitchellhamilton](https://github.com/mitchellhamilton)! - Fix TypeScript declarations
++- [`1706fb7`](https://github.com/changesets/changesets/commit/1706fb751ecc2f5a792c42f467b2063078d58716) [#321](https://github.com/changesets/changesets/pull/321) Thanks [@mitchellhamilton](https://github.com/mitchellhamilton)! - Fix TypeScript declarations
+ 
+ ## 0.3.1
+ 
+ ### Patch Changes
+ 
+-- [`04ddfd7`](https://github.com/atlassian/changesets/commit/04ddfd7c3acbfb84ef9c92873fe7f9dea1f5145c) [#305](https://github.com/atlassian/changesets/pull/305) Thanks [@Noviny](https://github.com/Noviny)! - Add link to changelog in readme
++- [`04ddfd7`](https://github.com/changesets/changesets/commit/04ddfd7c3acbfb84ef9c92873fe7f9dea1f5145c) [#305](https://github.com/changesets/changesets/pull/305) Thanks [@Noviny](https://github.com/Noviny)! - Add link to changelog in readme
+ 
+ ## 0.3.0
+ 
+ ### Minor Changes
+ 
+-- [`d08c3b3`](https://github.com/atlassian/changesets/commit/d08c3b309d38090ce4f1b8f62cc6b78a5a04efcf) [#281](https://github.com/atlassian/changesets/pull/281) Thanks [@tarang9211](https://github.com/tarang9211)! - Add support for other range types
++- [`d08c3b3`](https://github.com/changesets/changesets/commit/d08c3b309d38090ce4f1b8f62cc6b78a5a04efcf) [#281](https://github.com/changesets/changesets/pull/281) Thanks [@tarang9211](https://github.com/tarang9211)! - Add support for other range types
+ 
+ ## 0.2.0
+ 
+ ### Minor Changes
+ 
+-- [`1282ef6`](https://github.com/atlassian/changesets/commit/1282ef698761c1f634fb409842cc7de6b4d03da4) [#263](https://github.com/atlassian/changesets/pull/263) Thanks [@mitchellhamilton](https://github.com/mitchellhamilton)! - add ">=" to get-version-range-type
++- [`1282ef6`](https://github.com/changesets/changesets/commit/1282ef698761c1f634fb409842cc7de6b4d03da4) [#263](https://github.com/changesets/changesets/pull/263) Thanks [@mitchellhamilton](https://github.com/mitchellhamilton)! - add ">=" to get-version-range-type
+ 
+ ## 0.1.1
+ 
+ ### Patch Changes
+ 
+-- [8c43fa0](https://github.com/atlassian/changesets/commit/8c43fa061e2a5a01e4f32504ed351d261761c8dc) [#155](https://github.com/atlassian/changesets/pull/155) Thanks [@Noviny](https://github.com/Noviny)! - Add Readme
++- [8c43fa0](https://github.com/changesets/changesets/commit/8c43fa061e2a5a01e4f32504ed351d261761c8dc) [#155](https://github.com/changesets/changesets/pull/155) Thanks [@Noviny](https://github.com/Noviny)! - Add Readme
+ 
+ ## 0.1.0
+ 
+ ### Minor Changes
+ 
+-- [296a6731](https://github.com/atlassian/changesets/commit/296a6731) - Safety bump: Towards the end of preparing changesets v2, there was a lot of chaos - this bump is to ensure every package on npm matches what is found in the repository.
++- [296a6731](https://github.com/changesets/changesets/commit/296a6731) - Safety bump: Towards the end of preparing changesets v2, there was a lot of chaos - this bump is to ensure every package on npm matches what is found in the repository.
+ 
+ ## 0.0.2
+ 
+diff --git a/node_modules/@changesets/get-version-range-type/README.md b/node_modules/@changesets/get-version-range-type/README.md
+index bcaeb1b..5cb22c6 100644
+--- a/node_modules/@changesets/get-version-range-type/README.md
++++ b/node_modules/@changesets/get-version-range-type/README.md
+@@ -2,7 +2,6 @@
+ 
+ [![View changelog](https://img.shields.io/badge/changelogs.xyz-Explore%20Changelog-brightgreen)](https://changelogs.xyz/@changesets/get-version-range-type)
+ 
+-
+ Simple function that takes in a string which is a version range (ie `^1.0.0`, `~3.5.1`, `2.0.0`)
+ and returns the range definition.
+ 
+diff --git a/node_modules/@changesets/get-version-range-type/dist/get-version-range-type.cjs.dev.js b/node_modules/@changesets/get-version-range-type/dist/get-version-range-type.cjs.dev.js
+index fe4a282..ae692b5 100644
+--- a/node_modules/@changesets/get-version-range-type/dist/get-version-range-type.cjs.dev.js
++++ b/node_modules/@changesets/get-version-range-type/dist/get-version-range-type.cjs.dev.js
+@@ -11,4 +11,4 @@ function getVersionRangeType(versionRange) {
+   return "";
+ }
+ 
+-exports.default = getVersionRangeType;
++exports["default"] = getVersionRangeType;
+diff --git a/node_modules/@changesets/get-version-range-type/dist/get-version-range-type.esm.js b/node_modules/@changesets/get-version-range-type/dist/get-version-range-type.esm.js
+index 6b8a872..447a0c9 100644
+--- a/node_modules/@changesets/get-version-range-type/dist/get-version-range-type.esm.js
++++ b/node_modules/@changesets/get-version-range-type/dist/get-version-range-type.esm.js
+@@ -7,4 +7,4 @@ function getVersionRangeType(versionRange) {
+   return "";
+ }
+ 
+-export default getVersionRangeType;
++export { getVersionRangeType as default };
