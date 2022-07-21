@@ -1,20 +1,20 @@
 {
-  "name": "tsconfig",
-  "version": "1.0.0",
-  "private": true,
-  "main": "index.js",
-  "files": [
-    "bob.json",
-    "expo-plugin.json",
-    "hardhat.json",
-    "base.json",
-    "expo.json",
-    "express.json"
-  ],
-  "dependencies": {
-    "tslib": "2.4.0"
-  },
-  "devDependencies": {
-    "typescript": "4.7.3"
-  }
+	"name": "tsconfig",
+	"version": "1.0.0",
+	"private": true,
+	"main": "index.js",
+	"files": [
+		"base.json"
+	],
+	"scripts": {
+		"format": "eslint . --fix --ext '.js,.jsx,.ts,.tsx'",
+		"lint": "eslint . --ext '.js,.jsx,.ts,.tsx'"
+	},
+	"dependencies": {
+		"tslib": "2.4.0"
+	},
+	"devDependencies": {
+		"config": "*",
+		"typescript": "4.7.3"
+	}
 }

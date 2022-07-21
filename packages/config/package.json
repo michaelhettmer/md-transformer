@@ -1,28 +1,31 @@
 {
-  "name": "config",
-  "version": "1.0.0",
-  "private": true,
-  "files": [
-    "eslint-expo.js",
-    "prettier.config.js",
-    "eslint-bob.js",
-    "eslint-express.js",
-    "eslint-react-native.js"
-  ],
-  "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.28.0",
-    "@typescript-eslint/parser": "5.28.0",
-    "eslint-config-next": "12.1.6",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-config-universe": "11.0.0",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-json-format": "^2.0.1",
-    "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-react": "7.30.0",
-    "eslint-plugin-react-hooks": "4.6.0",
-    "eslint-plugin-testing-library": "5.5.1"
-  },
-  "devDependencies": {
-    "prettier": "2.7.1"
-  }
+	"name": "config",
+	"version": "1.0.0",
+	"private": true,
+	"files": [
+		"prettier.config.js",
+		"eslint-base.js"
+	],
+	"scripts": {
+		"format": "eslint . --fix --ext '.js,.jsx,.ts,.tsx'",
+		"lint": "eslint . --ext '.js,.jsx,.ts,.tsx'"
+	},
+	"dependencies": {
+		"@typescript-eslint/eslint-plugin": "5.28.0",
+		"@typescript-eslint/parser": "5.28.0",
+		"eslint-config-next": "12.1.6",
+		"eslint-config-prettier": "8.5.0",
+		"eslint-config-universe": "11.0.0",
+		"eslint-plugin-import": "2.26.0",
+		"eslint-plugin-json-format": "^2.0.1",
+		"eslint-plugin-prettier": "4.0.0",
+		"eslint-plugin-react": "7.30.0",
+		"eslint-plugin-react-hooks": "4.6.0",
+		"eslint-plugin-testing-library": "5.5.1",
+		"tslib": "2.4.0"
+	},
+	"devDependencies": {
+		"prettier": "2.7.1",
+		"typescript": "4.7.3"
+	}
 }

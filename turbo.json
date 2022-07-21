@@ -26,7 +26,7 @@
 		"test": {
 			"dependsOn": ["build"],
 			"inputs": ["src/**/*.ts", "test/**/*.ts", "src/**/*.tsx", "test/**/*.tsx"],
-			"outputs": []
+			"outputs": ["node_modules/.jest/results.json"]
 		},
 		"lint": {
 			"inputs": ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.js", "**/*.json"],

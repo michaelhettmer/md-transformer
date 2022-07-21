@@ -1,5 +1,5 @@
 {
-	"name": "markdown-transformer",
+	"name": "md-transformer",
 	"version": "0.0.0",
 	"private": true,
 	"description": "This is a sample plugin for Obsidian (<https://obsidian.md>).",
@@ -48,7 +48,7 @@
 		"prettier": "2.7.1",
 		"rimraf": "3.0.2",
 		"sort-package-json": "1.57.0",
-		"turbo": "1.2.16"
+		"turbo": "1.3.3"
 	},
 	"engines": {
 		"node": ">=16",
