@@ -6,6 +6,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "src",
-    "paths": {},
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    }
   },
 }

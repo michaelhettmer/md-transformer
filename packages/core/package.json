@@ -12,6 +12,9 @@
 		"test": "jest",
 		"typecheck": "tsc --noEmit"
 	},
+	"dependencies": {
+		"yaml": "2.1.1"
+	},
 	"devDependencies": {
 		"@babel/core": "7.18.9",
 		"@babel/preset-env": "7.18.9",
