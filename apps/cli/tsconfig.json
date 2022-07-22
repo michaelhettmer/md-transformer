@@ -1,11 +1,12 @@
 {
-  "extends": "tsconfig/base.json",
+  "extends": "tsconfig/oclif.json",
   "include": [
     "src"
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "src",
+    "outDir": "dist",
     "paths": {},
   },
 }
