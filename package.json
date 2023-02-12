@@ -43,7 +43,7 @@
 		"@commitlint/cli": "17.0.2",
 		"@commitlint/config-conventional": "17.0.2",
 		"husky": "8.0.1",
-		"npm-check-updates": "14.0.1",
+		"npm-check-updates": "16.7.4",
 		"patch-package": "6.4.7",
 		"prettier": "2.7.1",
 		"rimraf": "3.0.2",
