@@ -11,8 +11,8 @@
 		"lint": "eslint . --ext '.js,.jsx,.ts,.tsx'"
 	},
 	"dependencies": {
-		"@typescript-eslint/eslint-plugin": "5.28.0",
-		"@typescript-eslint/parser": "5.28.0",
+		"@typescript-eslint/eslint-plugin": "5.62.0",
+		"@typescript-eslint/parser": "5.62.0",
 		"eslint-config-next": "12.1.6",
 		"eslint-config-prettier": "8.5.0",
 		"eslint-config-universe": "11.0.0",
